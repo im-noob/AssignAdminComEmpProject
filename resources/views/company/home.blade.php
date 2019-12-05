@@ -13,6 +13,7 @@
             @endif
 
 
+            <a href= "{{url('/CreateNew')}}" type="button" class="btn btn-lg btn-block btn-dark">Create New Employee</a>
             <a href= "{{url('/EmployeeList')}}" type="button" class="btn btn-lg btn-block btn-info">Employee List</a>
         </div>
     </div>

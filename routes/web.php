@@ -11,17 +11,25 @@
 |
 */
 
+use Illuminate\Http\Resources\Json\Resource;
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
 
+//disabling registration
+Route::get('register', function () {
+    echo "<h1>Curently Disabled</h1>";
+});
+
 
 Route::group(['middleware'=>'Admin' ], function () {
-    Route::get('AdminHome', function(){
-        return view('admin.home');
-    });
+    Route::get('AdminHome', 'CompaniesController@indexAll');
+    Route::resource('companies', 'CompaniesController');
+    Route::resource('employees', 'EmployeesController');
+
 
 });
 
@@ -29,11 +37,7 @@ Route::group(['middleware'=>'Admin' ], function () {
 Route::group(['middleware'=>'Company' ], function () {
     Route::get('CompanyHome', function(){
         return view('company.home');
-        
     });
-});
+    // Route::resource('employees', 'EmployeesController');
 
-//disabling registration
-Route::get('register', function () {
-    echo "<h1>Curently Disabled</h1>";
 });

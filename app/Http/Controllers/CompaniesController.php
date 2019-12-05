@@ -14,7 +14,11 @@ class CompaniesController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.companyList',['data'=>Companies::paginate(10)]);
+    }
+
+    public function indexAll(){
+        return view('admin.home',['comanyList'=>Companies::all()]);
     }
 
     /**
