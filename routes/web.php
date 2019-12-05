@@ -17,8 +17,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 
+Route::group(['middleware'=>'Admin' ], function () {
+    Route::get('AdminHome', function(){
+        return view('admin.home');
+    });
+
+});
+
+
+Route::group(['middleware'=>'Company' ], function () {
+    Route::get('CompanyHome', function(){
+        return view('company.home');
+        
+    });
+});
 
 //disabling registration
 Route::get('register', function () {

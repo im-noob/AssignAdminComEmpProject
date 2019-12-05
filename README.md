@@ -21,9 +21,10 @@ Assignment Small project Admin Company and Employee
 	phone(Required)
 
 
+2. Admin in CRUD for Companies and Employees
+
 4. Email Regex validation and Password validations will be such that password must contain at least one uppercase, one lowercase and one symbol with at least 8 characters 
 
-2. Admin in CRUD for Companies and Employees
 
 5. Companies and Employees using JQuery AJAX. Create update feature using Ajax with the popup.
 
