@@ -5,7 +5,7 @@ Assignment Small project Admin Company and Employee
 
 1. Auth(Done)
 2. Admin in CRUD for Companies and Employees
-3. seed email applocumadmin@yopmail.com and password “Password@123”
+3. seed email applocumadmin@yopmail.com and password “Password@123”(DONE)
 4. Email Regex validation and Password validations will be such that password
 must contain at least one uppercase, one lowercase and one symbol with at least 8
 characters
