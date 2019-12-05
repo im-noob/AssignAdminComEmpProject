@@ -18,3 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+//disabling registration
+Route::get('register', function () {
+    echo "<h1>Curently Disabled</h1>";
+});

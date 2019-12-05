@@ -16,6 +16,7 @@ class UserTableSeeder extends Seeder
             'email' => 'applocumadmin@yopmail.com',
             'name' => 'Admin',
             'password' => bcrypt('Password@123'),
+            'is_admin' => 1,
         ]);
     }
 }
