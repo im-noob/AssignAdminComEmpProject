@@ -40,6 +40,7 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
+        
         //Checking Validation 
         $request->validate([
             'name' => 'required',
@@ -49,6 +50,14 @@ class CompaniesController extends Controller
             'logo' => 'nullable',
         ]);
         
+        //processing logo
+        // $path = "";
+        // if($request->hasFile('logo')) {
+        //     $path = $request->file('logo')->store('/');
+        // }
+        
+        // $request->logo = $path;
+
         $compID = Companies::create($request->only('name','email','website','logo'))->id;
         User::create([
             'id' => $compID,
@@ -56,6 +65,8 @@ class CompaniesController extends Controller
             'email' => $request->email,
             'password'=> bcrypt($request->password)
         ]);
+
+        
         
         return response()->json([
             'received'=>true,
@@ -66,6 +77,7 @@ class CompaniesController extends Controller
                 "website" => $request->website,
                 "logo" => $request->logo,
                 "password"=>$request->password,
+                // "path" => $path,
             ],
         ],200);
     }

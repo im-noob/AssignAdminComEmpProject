@@ -189,6 +189,10 @@
                 $Compwebsite = $("#Compwebsite").val();
                 $Complogo = $("#Complogo").val();
                 $Comppassword = $("#Comppassword").val();
+
+                // var file_data = $('#pic').prop('files')[0];
+                // var form_data = new FormData();
+                // form_data.append('file', file_data);
                 
                 // START: Ajax Request
                 $.ajax({
