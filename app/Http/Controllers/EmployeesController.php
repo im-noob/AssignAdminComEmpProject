@@ -35,7 +35,27 @@ class EmployeesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Checking Validation 
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone'=>'required',
+            'company_id' => 'required',
+        ]);
+        
+        Employees::create($request->only('name','email','phone','company_id'));
+        
+        
+        return response()->json([
+            'received'=>true,
+            'message'=>"Created Successfully",
+            'data'=>[
+                "name" => $request->name,
+                "email" => $request->email,
+                "phone" => $request->phone,
+                "company_id" => $request->company_id,
+            ],
+        ],200);
     }
 
     /**

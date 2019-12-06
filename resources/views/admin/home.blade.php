@@ -30,26 +30,27 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title" id="Create_Employee_Button_Modal_Label">Create Employee</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <button id="EmployeeCloseButton" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                      
+                        <div id="CreateEmployeeFormError">
+                        
+                        </div>
                       <form method="POST" action="{{ url('employees') }} ">
                           @csrf
-                          @method('PUT')
                           <div class="form-group row">
                               <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                               <div class="col-md-6">
-                                  <input id="name" type="text" class="form-control" name="name" required autofocus>
+                                  <input id="Empname" type="text" class="form-control" name="name" required autofocus>
                               </div>
                           </div>
               
                           <div class="form-group row">
-                              <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
+                              <label for="exampleFormControlSelect1" class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
                               <div class="col-md-6">
-                                <select class="form-control" id="exampleFormControlSelect1" name="company_id">
+                                <select class="form-control" id="Empcompany_id" name="company_id">
                                     @forelse ($comanyList as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
                                     @empty
@@ -64,15 +65,15 @@
                           <div class="form-group row">
                               <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
                               <div class="col-md-6">
-                                  <input id="email" type="text" class="form-control" name="email" required>
+                                  <input id="Empemail" type="text" class="form-control" name="email" required>
                               </div>
                           </div>
 
 
                           <div class="form-group row">
-                              <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
+                              <label for="Empphone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
                               <div class="col-md-6">
-                                  <input id="phone" type="text" class="form-control" name="phone"  required>
+                                  <input id="Empphone" type="text" class="form-control" name="phone"  required>
                               </div>
                           </div>
             
@@ -80,7 +81,7 @@
                           <div class="form-group row mb-0">
                               <div class="col-md-6 offset-md-4">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-primary" >
+                                  <button id="CreateEmployeeButton"  type="button" class="btn btn-primary" >
                                       Create Employee
                                   </button>
                               </div>
@@ -106,12 +107,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div id="CreateEmployeeFormError">
+                            <div id="CreateCompanyFormError">
                                 
                             </div>
                             <form method="POST" action="{{ url('employees') }}" id="CreateEmployeeForm">
                                 @csrf
-                                @method('PUT')
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                                     <div class="col-md-6">
@@ -180,6 +180,9 @@
     <script>
         $(function(){
             console.log("Script Start");
+
+
+            //Create Company Section:START
             $("#CreateCompanyButton").click(function(){
                 $Compname = $("#Compname").val();
                 $Compemail = $("#Compemail").val();
@@ -229,6 +232,75 @@
                                 }
                             },
                             error: function(xhr,status,error){
+                                $("#CreateCompanyFormError").text("");
+                                $.each(xhr.responseJSON.errors, function (indexInArray, valueOfElement) { 
+                                    console.log(valueOfElement[0]);
+                                     $("#CreateCompanyFormError").append('<div class="alert alert-danger" role="alert">'+
+                                            valueOfElement[0]
+                                        +'</div>');
+                                });
+
+                                console.log(xhr.responseJSON);
+
+                                console.log(status);
+                                console.log(error);
+                            }
+                    });
+                    // END: Ajax Request
+            })
+            //Create COmpany Section:STOP
+
+
+
+
+            //Create Employee Section:START
+            $("#CreateEmployeeButton").click(function(){
+                $Empname = $("#Empname").val();
+                $Empemail = $("#Empemail").val();
+                $Empcompany_id = $("#Empcompany_id").val();
+                $Empphone = $("#Empphone").val();
+                
+                // START: Ajax Request
+                $.ajax({
+                            cache: false,
+                            type: "POST",
+                            data: {
+            
+                                _method: "POST",
+                                _token:  "{{ csrf_token() }}",
+                                name : $Empname,
+                                email : $Empemail,
+                                company_id : $Empcompany_id,
+                                phone : $Empphone,
+                            },
+                            url: "{{url('/')}}/employees", 
+                            success: function(response){
+                                console.log(response)
+                                if (response.received) {
+
+                                    $("#EmployeeCloseButton").click();
+                                    $("#status").text("");
+                                    $("#status").append('<div class="alert alert-success" role="alert">'+
+                                            response.message
+                                        +'</div>');
+
+                                    //clearing data on success
+                                    $("#Empname").val("");
+                                    $("#Empemail").val("");
+                                    $("#Empcompany_id").val("");
+                                    $("#Empphone").val("");
+
+                                    // //filling value
+                                    // $("#USDtoINRConverted").val(response.data.USDtoINRConverted);
+                                    // $("#GoldQuientityIngForINR").val(response.data.GoldQuientityIngForINR);
+                                    // $("#INRvalueIN1USD").val(response.data.INRvalueIN1USD);
+                                    // $("#INRto1gGold").val(response.data.INRto1gGold);
+
+                                }else{
+                                    alert("Oops!!! Somthing is not right");
+                                }
+                            },
+                            error: function(xhr,status,error){
                                 $("#CreateEmployeeFormError").text("");
                                 $.each(xhr.responseJSON.errors, function (indexInArray, valueOfElement) { 
                                     console.log(valueOfElement[0]);
@@ -245,6 +317,9 @@
                     });
                     // END: Ajax Request
             })
+            //Create Employee Section:STOP
+
+
         })
     </script>
 
