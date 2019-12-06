@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Companies;
+use App\Mail\SendMailToAdmin;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CompaniesController extends Controller
 {
@@ -50,7 +52,7 @@ class CompaniesController extends Controller
         //Checking Validation 
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password'=>'required',
             'website' => 'nullable',
             'logo' => 'nullable',
@@ -73,6 +75,9 @@ class CompaniesController extends Controller
         ]);
 
         
+        // Sending Mail to Admin
+        Mail::to($request->user())->send(new SendMailToAdmin(User::findOrFail($compID)));
+
         
         return response()->json([
             'received'=>true,

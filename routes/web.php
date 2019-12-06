@@ -43,3 +43,4 @@ Route::group(['middleware'=>'Company' ], function () {
     Route::resource('employeesForCompany', 'EmployeesController');
 
 });
+
