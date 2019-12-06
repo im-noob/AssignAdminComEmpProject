@@ -112,6 +112,7 @@
                             </div>
                             <form method="POST" action="{{ url('employees') }}" id="CreateEmployeeForm">
                                 @csrf
+                                @method('POST')
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                                     <div class="col-md-6">
@@ -139,7 +140,7 @@
                                 <div class="form-group row">
                                     <label for="website" class="col-md-4 col-form-label text-md-right">{{ __('website') }}</label>
                                     <div class="col-md-6">
-                                        <input id="Compwebsite" type="text" class="form-control" name="website"  required>
+                                        <input id="Compwebsite" type="text" class="form-control" name="website" >
                                     </div>
                                 </div>
 
@@ -147,7 +148,7 @@
                                 <div class="form-group row">
                                     <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
                                     <div class="col-md-6">
-                                        <input id="Complogo" type="file" class="form-control" name="logo">
+                                        <input lass="custom-file-input" id="Complogo" type="file" class="form-control" name="logo">
                                     </div>
                                 </div>
                 
@@ -155,7 +156,7 @@
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" id="CreateCompanyButton" class="btn btn-primary" >
+                                        <button type="submit" id="CreateCompanyButton" class="btn btn-primary" >
                                             Create Company
                                         </button>
                                     </div>
@@ -183,11 +184,10 @@
 
 
             //Create Company Section:START
-            $("#CreateCompanyButton").click(function(){
-                $Compname = $("#Compname").val();
+            $("#CreateEmployeeForm").submit(function(e){
+
+                e.preventDefault();
                 $Compemail = $("#Compemail").val();
-                $Compwebsite = $("#Compwebsite").val();
-                $Complogo = $("#Complogo").val();
                 $Comppassword = $("#Comppassword").val();
 
                 if(!validateEmail($Compemail)){
@@ -200,27 +200,26 @@
                     return;
                 }
 
-                
+                            
 
+                var form=null;
+                form =$('#CreateEmployeeForm');
+                console.log(form);
 
-                // var file_data = $('#pic').prop('files')[0];
-                // var form_data = new FormData();
-                // form_data.append('file', file_data);
-                
+                var formdata=false;
+                formdata=new FormData(form[0]);
+                console.log(formdata);
+
                 // START: Ajax Request
                 $.ajax({
                             cache: false,
                             type: "POST",
-                            data: {
-            
-                                _method: "POST",
-                                _token:  "{{ csrf_token() }}",
-                                name : $Compname,
-                                email : $Compemail,
-                                password: $Comppassword,
-                                website : $Compwebsite,
-                                logo : $Complogo,
-                            },
+                            processData : false,
+                            data: formdata ? formdata : form.serialize(),
+                            cache: false,
+                            processData: false,
+                            contentType: false,
+
                             url: "{{url('/')}}/companies", 
                             success: function(response){
                                 console.log(response)
@@ -239,9 +238,9 @@
                                     $("#Complogo").val("");
 
                                     //refreshing list
-                                    setTimeout(function(){
-                                        location.reload();
-                                    },2000);
+                                    // setTimeout(function(){
+                                    //     location.reload();
+                                    // },2000);
 
 
                                 }else{

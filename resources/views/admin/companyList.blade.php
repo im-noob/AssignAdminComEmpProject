@@ -33,7 +33,11 @@
                     <th scope="row">{{$item->id}}</th>
                     <th> {{$item->name}}</th>
                     <th>{{$item->email}} </th>
-                    <th>{{$item->logo}}</th>
+                    <th>
+                        @if ($item->logo!= "")
+                            <img style="height: 50px;" src="{{asset('storage/'.$item->logo)}}" class ="img-thumbnail"/>
+                        @endif
+                    </th>
                     <th>{{$item->website}}</th>
                     {{-- START:Update Button --}}
                     <th>

@@ -58,20 +58,31 @@ class CompaniesController extends Controller
             'logo' => 'nullable',
         ]);
         
-        //processing logo
-        // $path = "";
-        // if($request->hasFile('logo')) {
-        //     $path = $request->file('logo')->store('/');
-        // }
+        // processing logo
+        $path = "";
+        if($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $path = $file->store('public/');
+            $pathBaseFile = basename($path);
+            // $fileExtension = $file->getClientOriginalExtension();
+            $onlyFullFileName = $pathBaseFile;
+        }
         
-        // $request->logo = $path;
+        $request->logo = $onlyFullFileName;
 
-        $compID = Companies::create($request->only('name','email','website','logo'))->id;
+        $compID = Companies::create([
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'website'=>$request->website,
+                'logo' => $onlyFullFileName,
+            ])->id;
+
         User::create([
             'id' => $compID,
             'name' => $request->name,
             'email' => $request->email,
-            'password'=> bcrypt($request->password)
+            'password'=> bcrypt($request->password),
+            'path' => $path,
         ]);
 
         
@@ -88,7 +99,8 @@ class CompaniesController extends Controller
                 "website" => $request->website,
                 "logo" => $request->logo,
                 "password"=>$request->password,
-                // "path" => $path,
+                "onlyFullFileName" => $onlyFullFileName,
+                "logoRequest" => $request->logo,
             ],
         ],200);
     }
