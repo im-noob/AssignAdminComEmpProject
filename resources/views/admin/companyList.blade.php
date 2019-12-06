@@ -2,11 +2,14 @@
 
 @section('Listcontent')
     {{-- START:Showing Success Message --}}
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <div id="status">
+        @if (session('status'))
+            <div class="alert alert-success" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif             
+    </div>
+        
     {{-- END:Showing Success Message --}}
 
     <section>
@@ -34,68 +37,81 @@
                     <th>{{$item->website}}</th>
                     {{-- START:Update Button --}}
                     <th>
-                      <button type="button"  class="btn btn-primary update_btn update_button" data-toggle="modal" data-target="#Update_Button_Modal_{{$item->id}}">Update</button>
-                          {{-- Update Button Modal Section:START --}}
-                          <div class="modal fade" id="Update_Button_Modal_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="Update_Button_Modal_Label" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h5 class="modal-title" id="Update_Button_Modal_Label">Update User</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  <div class="modal-body">
-                                    
-                                    <form method="POST" action="{{ url('employees') }}/{{$item->id}} ">
-                                        @csrf
-                                        @method('PUT')
-                                        <div class="form-group row">
-                                            <label for="first_name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
-                                            <div class="col-md-6">
-                                                <input id="first_name" type="text" class="form-control" name="first_name" required autofocus>
-                                            </div>
-                                        </div>
-                            
-                                        <div class="form-group row">
-                                            <label for="last_name" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
-                                            <div class="col-md-6">
-                                                <input id="last_name" type="text" class="form-control" name="last_name" required>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-group row">
-                                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
-                                            <div class="col-md-6">
-                                                <input id="email" type="text" class="form-control" name="email" >
-                                            </div>
-                                        </div>
-
-
-                                        <div class="form-group row">
-                                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
-                                            <div class="col-md-6">
-                                                <input id="phone" type="text" class="form-control" name="phone"  >
-                                            </div>
-                                        </div>
+                      <button type="button"  class="btn btn-primary update_btn update_button" data-toggle="modal" data-target="#Update_Company_Button_Modal_{{$item->id}}">Update</button>
                           
-                        
-                                        <div class="form-group row mb-0">
-                                            <div class="col-md-6 offset-md-4">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary" >
-                                                    Update User
-                                                </button>
-                                            </div>
-                                        </div>
 
-                                    </form>
-                                    
-                                  </div>
+        {{-- UpdateNew Company Button Modal Section:START --}}
+        <div class="modal fade" id="Update_Company_Button_Modal_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="Update_Company_Button_Modal_Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="Update_Company_Button_Modal_Label">Update Company</h5>
+                        <button id="UpdateCompanyCloseButton_{{$item->id}}" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="UpdateCompanyFormError_{{$item->id}}">
+                            
+                        </div>
+                        <form method="POST" action="{{ url('employees') }}" id="UpdateEmployeeForm">
+                            @csrf
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                                <div class="col-md-6">
+                                    <input id="Compname_{{$item->id}}" type="text" class="form-control" name="name" required autofocus>
                                 </div>
-                              </div>
-                          </div>
-                          {{-- Update Button Modal Section:STOP --}}
+                            </div>
+                                            
+                            
+    
+                            <div class="form-group row">
+                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
+                                <div class="col-md-6">
+                                    <input id="Compemail_{{$item->id}}" type="text" class="form-control" name="email" required>
+                                </div>
+                            </div>
+    
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('password') }}</label>
+                                <div class="col-md-6">
+                                    <input id="Comppassword_{{$item->id}}" type="text" class="form-control" name="password" required>
+                                </div>
+                            </div>
+    
+                            <div class="form-group row">
+                                <label for="website" class="col-md-4 col-form-label text-md-right">{{ __('website') }}</label>
+                                <div class="col-md-6">
+                                    <input id="Compwebsite_{{$item->id}}" type="text" class="form-control" name="website"  required>
+                                </div>
+                            </div>
+    
+    
+                            <div class="form-group row">
+                                <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
+                                <div class="col-md-6">
+                                    <input id="Complogo_{{$item->id}}" type="file" class="form-control" name="logo">
+                                </div>
+                            </div>
+            
+            
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" Compname_ID="{{$item->id}}" id="UpdateCompanyButton" class="UpdateCompanyButton btn btn-primary" >
+                                        Update Company
+                                    </button>
+                                </div>
+                            </div>
+    
+                        </form>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- UpdateNew Company Button Modal Section:STOP --}}
+    
                     </th>
                     {{-- STOP:Update Button --}}
 
@@ -124,5 +140,85 @@
         </table>
     </section>
 
+    <script>
+        $(function(){
+            console.log("loaded");
+
+            //Update Company Section:START
+            $(".UpdateCompanyButton").click(function(){
+
+                console.log("UpdateCompanyButton");
+                $id = $(this).attr("Compname_ID");
+                $Compname = $("#Compname_"+$id).val();
+                $Compemail = $("#Compemail_"+$id).val();
+                $Compwebsite = $("#Compwebsite_"+$id).val();
+                $Complogo = $("#Complogo_"+$id).val();
+                $Comppassword = $("#Comppassword_"+$id).val();
+
+                console.log($id);
+                
+                // START: Ajax Request
+                $.ajax({
+                            cache: false,
+                            type: "POST",
+                            data: {
+            
+                                _method: "PUT",
+                                _token:  "{{ csrf_token() }}",
+                                name : $Compname,
+                                email : $Compemail,
+                                password: $Comppassword,
+                                website : $Compwebsite,
+                                logo : $Complogo,
+                            },
+                            url: "{{url('/')}}/companies/"+$id, 
+                            success: function(response){
+                                console.log(response)
+                                if (response.received) {
+
+                                    $("#UpdateCompanyCloseButton_"+$id).click();
+                                    $("#status").text("");
+                                    $("#status").append('<div class="alert alert-success" role="alert">'+
+                                            response.message
+                                        +'</div>');
+
+                                    //clearing data on success
+                                    $("#Compname_"+$id).val("");
+                                    $("#Compemail_"+$id).val("");
+                                    $("#Compwebsite_"+$id).val("");
+                                    $("#Complogo_"+$id).val("");
+
+                                    //refreshing list
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },2000);
+
+                                    
+
+                                }else{
+                                    alert("Oops!!! Somthing is not right");
+                                }
+                            },
+                            error: function(xhr,status,error){
+                                $("#UpdateCompanyFormError_"+$id).text("");
+                                $.each(xhr.responseJSON.errors, function (indexInArray, valueOfElement) { 
+                                    console.log(valueOfElement[0]);
+                                     $("#UpdateCompanyFormError_"+$id).append('<div class="alert alert-danger" role="alert">'+
+                                            valueOfElement[0]
+                                        +'</div>');
+                                });
+
+                                console.log(xhr.responseJSON);
+
+                                console.log(status);
+                                console.log(error);
+                            }
+                    });
+                    // END: Ajax Request
+            })
+            //Update COmpany Section:STOP
+
+        })
+    </script>
 
 @endsection

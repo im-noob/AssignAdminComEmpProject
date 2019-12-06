@@ -16,10 +16,10 @@
                 
 
             @if (sizeof($comanyList) != 0) 
-                <a href= "{{url('/CreateNew')}}" type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#Create_Employee_Button_Modal" >Create New Compay</a>
+                <a href= "#" type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#Create_Employee_Button_Modal" >Create New Employee</a>
             @endif
 
-            <a href= "{{url('/CreateNew')}}" type="button" class="btn btn-lg btn-block btn-dark" data-toggle="modal" data-target="#Create_Company_Button_Modal" >Create New Employee</a>
+            <a href= "#" type="button" class="btn btn-lg btn-block btn-dark" data-toggle="modal" data-target="#Create_Company_Button_Modal" >Create New Company</a>
              <a href= "{{url('/companies')}}" type="button" class="btn btn-lg btn-block btn-success">Company List</a>
             <a href= "{{url('/EmployeeList')}}" type="button" class="btn btn-lg btn-block btn-info">Employee List</a>
             
@@ -221,11 +221,11 @@
                                     $("#Compwebsite").val("");
                                     $("#Complogo").val("");
 
-                                    // //filling value
-                                    // $("#USDtoINRConverted").val(response.data.USDtoINRConverted);
-                                    // $("#GoldQuientityIngForINR").val(response.data.GoldQuientityIngForINR);
-                                    // $("#INRvalueIN1USD").val(response.data.INRvalueIN1USD);
-                                    // $("#INRto1gGold").val(response.data.INRto1gGold);
+                                    //refreshing list
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },2000);
+
 
                                 }else{
                                     alert("Oops!!! Somthing is not right");
@@ -290,11 +290,7 @@
                                     $("#Empcompany_id").val("");
                                     $("#Empphone").val("");
 
-                                    // //filling value
-                                    // $("#USDtoINRConverted").val(response.data.USDtoINRConverted);
-                                    // $("#GoldQuientityIngForINR").val(response.data.GoldQuientityIngForINR);
-                                    // $("#INRvalueIN1USD").val(response.data.INRvalueIN1USD);
-                                    // $("#INRto1gGold").val(response.data.INRto1gGold);
+                                   
 
                                 }else{
                                     alert("Oops!!! Somthing is not right");

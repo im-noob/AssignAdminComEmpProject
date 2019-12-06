@@ -49,8 +49,9 @@ class CompaniesController extends Controller
             'logo' => 'nullable',
         ]);
         
-        Companies::create($request->only('name','email','website','logo'));
+        $compID = Companies::create($request->only('name','email','website','logo'))->id;
         User::create([
+            'id' => $compID,
             'name' => $request->name,
             'email' => $request->email,
             'password'=> bcrypt($request->password)
@@ -98,9 +99,37 @@ class CompaniesController extends Controller
      * @param  \App\Companies  $companies
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Companies $companies)
+    public function update(Request $request, Companies $companies,$id)
     {
-        //
+
+        //Checking Validation 
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password'=>'required',
+            'website' => 'nullable',
+            'logo' => 'nullable',
+        ]);
+        
+        $companies::find($id)->update($request->only('name','email','website','logo'));
+        $user = User::find($id);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password'=> bcrypt($request->password)
+        ]);
+        
+        return response()->json([
+            'received'=>true,
+            'message'=>"Updated Successfully",
+            'data'=>[
+                "name" => $request->name,
+                "email" => $request->email,
+                "website" => $request->website,
+                "logo" => $request->logo,
+                "password"=>$request->password,
+            ],
+        ],200);
     }
 
     /**
