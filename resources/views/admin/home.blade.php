@@ -245,7 +245,7 @@
                                     $("#Compwebsite").val("");
                                     $("#Complogo").val("");
 
-                                    refreshing list
+                                    // refreshing list
                                     setTimeout(function(){
                                         location.reload();
                                     },2000);
