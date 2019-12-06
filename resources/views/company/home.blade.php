@@ -15,11 +15,9 @@
                 </div>
                 
 
-            @if (sizeof($companyList) != 0) 
-                <a href= "#" type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#Create_Employee_Button_Modal" >Create New Employee</a>
-            @endif
+            <a href= "#" type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#Create_Employee_Button_Modal" >Create New Employee</a>
 
-            <a href= "{{url('/employees')}}" type="button" class="btn btn-lg btn-block btn-info">My Employee List</a>
+            <a href= "{{url('/employeesForCompany')}}" type="button" class="btn btn-lg btn-block btn-info">My Employee List</a>
             
 
             {{-- CreateNew Employee Button Modal Section:START --}}
@@ -36,7 +34,7 @@
                         <div id="CreateEmployeeFormError">
                         
                         </div>
-                      <form method="POST" action="{{ url('employees') }} ">
+                      <form method="POST" action="{{ url('employeesForCompany') }} ">
                           @csrf
                           <div class="form-group row">
                               <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
@@ -93,80 +91,6 @@
             </div>
             {{-- CreateNew Employee Button Modal Section:STOP --}}
 
-
-            {{-- CreateNew Company Button Modal Section:START --}}
-            <div class="modal fade" id="Create_Company_Button_Modal" tabindex="-1" role="dialog" aria-labelledby="Create_Company_Button_Modal_Label" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Create_Company_Button_Modal_Label">Create Company</h5>
-                            <button id="CreateCompanyCloseButton" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div id="CreateCompanyFormError">
-                                
-                            </div>
-                            <form method="POST" action="{{ url('employees') }}" id="CreateEmployeeForm">
-                                @csrf
-                                <div class="form-group row">
-                                    <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="Compname" type="text" class="form-control" name="name" required autofocus>
-                                    </div>
-                                </div>
-                    
-                                
-                                
-
-                                <div class="form-group row">
-                                    <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="Compemail" type="text" class="form-control" name="email" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('password') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="Comppassword" type="text" class="form-control" name="password" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label for="website" class="col-md-4 col-form-label text-md-right">{{ __('website') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="Compwebsite" type="text" class="form-control" name="website"  required>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group row">
-                                    <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="Complogo" type="file" class="form-control" name="logo">
-                                    </div>
-                                </div>
-                
-                
-                                <div class="form-group row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="button" id="CreateCompanyButton" class="btn btn-primary" >
-                                            Create Company
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </form>
-                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{-- CreateNew Company Button Modal Section:STOP --}}
-    
                 
     
 
@@ -178,92 +102,6 @@
     <script>
         $(function(){
             console.log("Script Start");
-
-
-            //Create Company Section:START
-            $("#CreateCompanyButton").click(function(){
-                $Compname = $("#Compname").val();
-                $Compemail = $("#Compemail").val();
-                $Compwebsite = $("#Compwebsite").val();
-                $Complogo = $("#Complogo").val();
-                $Comppassword = $("#Comppassword").val();
-
-                if(!validateEmail($Compemail)){
-                    alert("Not a valid Email");
-                    return;
-                }
-
-                if(!validatePassword($Comppassword)){
-                    alert("Not a valid Password!!must contain at least one uppercase, one lowercase and one symbol with at least 8 characters ");
-                    return;
-                }
-
-                
-
-
-                // var file_data = $('#pic').prop('files')[0];
-                // var form_data = new FormData();
-                // form_data.append('file', file_data);
-                
-                // START: Ajax Request
-                $.ajax({
-                            cache: false,
-                            type: "POST",
-                            data: {
-            
-                                _method: "POST",
-                                _token:  "{{ csrf_token() }}",
-                                name : $Compname,
-                                email : $Compemail,
-                                password: $Comppassword,
-                                website : $Compwebsite,
-                                logo : $Complogo,
-                            },
-                            url: "{{url('/')}}/companies", 
-                            success: function(response){
-                                console.log(response)
-                                if (response.received) {
-
-                                    $("#CreateCompanyCloseButton").click();
-                                    $("#status").text("");
-                                    $("#status").append('<div class="alert alert-success" role="alert">'+
-                                            response.message
-                                        +'</div>');
-
-                                    //clearing data on success
-                                    $("#Compname").val("");
-                                    $("#Compemail").val("");
-                                    $("#Compwebsite").val("");
-                                    $("#Complogo").val("");
-
-                                    //refreshing list
-                                    setTimeout(function(){
-                                        location.reload();
-                                    },2000);
-
-
-                                }else{
-                                    alert("Oops!!! Somthing is not right");
-                                }
-                            },
-                            error: function(xhr,status,error){
-                                $("#CreateCompanyFormError").text("");
-                                $.each(xhr.responseJSON.errors, function (indexInArray, valueOfElement) { 
-                                    console.log(valueOfElement[0]);
-                                     $("#CreateCompanyFormError").append('<div class="alert alert-danger" role="alert">'+
-                                            valueOfElement[0]
-                                        +'</div>');
-                                });
-
-                                console.log(xhr.responseJSON);
-
-                                console.log(status);
-                                console.log(error);
-                            }
-                    });
-                    // END: Ajax Request
-            })
-            //Create COmpany Section:STOP
 
 
 
@@ -296,7 +134,7 @@
                                 company_id : $Empcompany_id,
                                 phone : $Empphone,
                             },
-                            url: "{{url('/')}}/employees", 
+                            url: "{{url('/')}}/employeesForCompany", 
                             success: function(response){
                                 console.log(response)
                                 if (response.received) {

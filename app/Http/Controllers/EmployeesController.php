@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Companies;
 use App\Employees;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeesController extends Controller
 {
@@ -15,10 +16,25 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        $data = Employees::join('companies','companies.id','=','employees.company_id')
-                            ->select('companies.name as companyName','employees.name as name','employees.email as email','phone','employees.id as id')->paginate(10);
+        $data = [];
+        $companyList = [];
+
+        if(Auth::user()->isAdmin()){
+            $data = Employees::join('companies','companies.id','=','employees.company_id')
+                            ->select('companies.name as companyName','employees.name as name','employees.email as email','phone','employees.id as id')
+                            ->paginate(10);
+            $companyList = Companies::all();
+            return view('admin.employeeList',['data'=>$data,'companyList'=>$companyList]);
+        }else{
+            $data = Employees::join('companies','companies.id','=','employees.company_id')
+                            ->select('companies.name as companyName','employees.name as name','employees.email as email','phone','employees.id as id')
+                            ->where('employees.company_id',Auth::id())
+                            ->paginate(10);
+            $companyList = Companies::where('id',Auth::id())->get();
+            return view('company.employeeList',['data'=>$data,'companyList'=>$companyList]);
+        }
         
-        return view('admin.employeeList',['data'=>$data,'companyList'=>Companies::all()]);
+        
 
     }
 
@@ -47,6 +63,9 @@ class EmployeesController extends Controller
             'phone'=>'required',
             'company_id' => 'required',
         ]);
+        if(!Auth::user()->isAdmin()){
+            $request->company_id = Auth::id();
+        }
         
         Employees::create($request->only('name','email','phone','company_id'));
         
@@ -82,7 +101,7 @@ class EmployeesController extends Controller
      */
     public function edit(Employees $employees)
     {
-        //
+        echo "edit";
     }
 
     /**
@@ -102,8 +121,15 @@ class EmployeesController extends Controller
             'company_id' => 'required',
         ]);
         
-        $employees::find($id)->update($request->only('name','email','phone','company_id'));
         
+        
+        if(Auth::user()->isAdmin()){
+            $employees::find($id)->update($request->only('name','email','phone','company_id'));
+        }else{
+            $employees::find($id)
+                    ->where('company_id',Auth::id())
+                    ->update($request->only('name','email','phone','company_id'));
+        }
         
         return response()->json([
             'received'=>true,
@@ -125,8 +151,16 @@ class EmployeesController extends Controller
      */
     public function destroy(Employees $employees,$id)
     {
-        $employees = $employees::find($id);
-        $employees->delete();
-        return redirect()->route('employees.index')->with('status','Deleted Successfully');
+        if(Auth::user()->isAdmin()){
+            $employees = $employees::find($id);
+            $employees->delete();
+            return redirect()->route('employees.index')->with('status','Deleted Successfully');
+        }else{
+            $employees = $employees::find($id)->where('company_id',Auth::id());
+            $employees->delete();
+            return redirect()->route('employeesForCompany.index')->with('status','Deleted Successfully');
+        }
+        
+        
     }
 }

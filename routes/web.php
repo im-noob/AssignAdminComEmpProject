@@ -35,9 +35,11 @@ Route::group(['middleware'=>'Admin' ], function () {
 
 
 Route::group(['middleware'=>'Company' ], function () {
-    Route::get('CompanyHome', function(){
-        return view('company.home');
-    });
-    // Route::resource('employees', 'EmployeesController');
+    // Route::get('CompanyHome', function(){
+    //     return view('company.home');
+    // });
+    Route::get('CompanyHome', 'CompaniesController@indexAll');
+
+    Route::resource('employeesForCompany', 'EmployeesController');
 
 });

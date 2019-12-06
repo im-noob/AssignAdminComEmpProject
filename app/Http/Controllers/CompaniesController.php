@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Companies;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompaniesController extends Controller
 {
@@ -19,7 +20,12 @@ class CompaniesController extends Controller
     }
 
     public function indexAll(){
-        return view('admin.home',['companyList'=>Companies::all()]);
+        if(Auth::user()->isAdmin()){
+            return view('admin.home',['companyList'=>Companies::all()]);
+        }else{
+            return view('company.home',['companyList'=>Companies::where('id',Auth::id())->get()]);
+        }
+        
     }
 
     /**

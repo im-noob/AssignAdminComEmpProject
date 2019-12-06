@@ -40,14 +40,12 @@ Assignment Small project Admin Company and Employee
 2.[DONE] must contain at least one uppercase, one lowercase and one symbol with at least 8 charact Normal Email Regex validation and Password validations will be such that password 
 
 4.[DONE] CRUD employee in admin
-5. CRUD in copany
+5.[DONE] CRUD in copany
 
 6. Email notification: send email to admin email whenever a new company is entered
 
 
-8. Integirity constant with Emial uniqyer
+7. Integirity constant with Emial uniqyer
+8. Code Optimization
 
-7. logo (minimum 100×100),
-
-
-
+9. logo (minimum 100×100),

@@ -54,7 +54,7 @@
                         <div id="UpdateEmployeeFormError_{{$item->id}}">
                             
                         </div>
-                        <form method="POST" action="{{ url('employees') }}" id="UpdateEmployeeForm">
+                        <form method="POST" action="{{ url('employeesForCompany') }}" id="UpdateEmployeeForm">
                             @csrf
 
                             <div class="form-group row">
@@ -122,12 +122,12 @@
 
                     {{-- START:Delete Button --}}
                     <th>
-                        <form method="POST" action="{{url('/employees')}}/{{$item->id}}"> 
+                        <form method="POST" action="{{url('/employeesForCompany')}}/{{$item->id}}"> 
                           @method("DELETE")
                           @csrf
                           <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
-                    </th>
+                    </th>item
                     {{-- STOP:Delete Button --}}
 
                 </tr>
@@ -203,7 +203,7 @@
                                 phone : $Empphone,
                                 company_id : $company_id,
                             },
-                            url: "{{url('/')}}/employees/"+$id, 
+                            url: "{{url('/')}}/employeesForCompany/"+$id, 
                             success: function(response){
                                 console.log(response)
                                 if (response.received) {
