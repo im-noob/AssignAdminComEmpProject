@@ -60,6 +60,7 @@
                         </div>
                         <form method="POST" action="{{ url('employees') }}" id="UpdateEmployeeForm">
                             @csrf
+                            @method("PUT")
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                                 <div class="col-md-6">
@@ -90,13 +91,13 @@
                                 </div>
                             </div>
     
-    
+{{--     
                             <div class="form-group row">
                                 <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
                                 <div class="col-md-6">
-                                    <input id="Complogo_{{$item->id}}" type="file" class="form-control" name="logo">
+                                    <input id="Complogo_{{$item->id}}" type="file" class="form-control" name="logo" accept="image/*">
                                 </div>
-                            </div>
+                            </div> --}}
             
             
                             <div class="form-group row mb-0">
@@ -173,7 +174,6 @@
                 $Compname = $("#Compname_"+$id).val();
                 $Compemail = $("#Compemail_"+$id).val();
                 $Compwebsite = $("#Compwebsite_"+$id).val();
-                $Complogo = $("#Complogo_"+$id).val();
                 $Comppassword = $("#Comppassword_"+$id).val();
 
                 if(!validateEmail($Compemail)){
@@ -200,7 +200,6 @@
                                 email : $Compemail,
                                 password: $Comppassword,
                                 website : $Compwebsite,
-                                logo : $Complogo,
                             },
                             url: "{{url('/')}}/companies/"+$id, 
                             success: function(response){
@@ -217,7 +216,6 @@
                                     $("#Compname_"+$id).val("");
                                     $("#Compemail_"+$id).val("");
                                     $("#Compwebsite_"+$id).val("");
-                                    $("#Complogo_"+$id).val("");
 
                                     //refreshing list
                                     setTimeout(function(){

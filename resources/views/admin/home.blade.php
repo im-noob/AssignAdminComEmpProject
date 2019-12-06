@@ -148,7 +148,7 @@
                                 <div class="form-group row">
                                     <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
                                     <div class="col-md-6">
-                                        <input lass="custom-file-input" id="Complogo" type="file" class="form-control" name="logo" accept="image/*">
+                                        <input class="custom-file-input" id="Complogo" type="file" class="form-control" name="logo" accept="image/*">
                                     </div>
                                 </div>
                 
@@ -195,6 +195,7 @@
             $("#CreateEmployeeForm").submit(function(e){
 
                 e.preventDefault();
+                
                 $Compemail = $("#Compemail").val();
                 $Comppassword = $("#Comppassword").val();
 

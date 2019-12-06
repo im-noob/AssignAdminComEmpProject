@@ -151,13 +151,13 @@ class CompaniesController extends Controller
         //Checking Validation 
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password'=>'required',
             'website' => 'nullable',
-            'logo' => 'nullable',
         ]);
         
-        $companies::find($id)->update($request->only('name','email','website','logo'));
+        
+        $companies::find($id)->update($request->only('name','email','website'));
         $user = User::find($id);
         $user->update([
             'name' => $request->name,
@@ -172,7 +172,6 @@ class CompaniesController extends Controller
                 "name" => $request->name,
                 "email" => $request->email,
                 "website" => $request->website,
-                "logo" => $request->logo,
                 "password"=>$request->password,
             ],
         ],200);
