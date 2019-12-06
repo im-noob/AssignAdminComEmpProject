@@ -148,7 +148,7 @@
                                 <div class="form-group row">
                                     <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
                                     <div class="col-md-6">
-                                        <input lass="custom-file-input" id="Complogo" type="file" class="form-control" name="logo">
+                                        <input lass="custom-file-input" id="Complogo" type="file" class="form-control" name="logo" accept="image/*">
                                     </div>
                                 </div>
                 
@@ -182,7 +182,15 @@
         $(function(){
             console.log("Script Start");
 
+            //image dimesnion checker
+            // $("#Complogo").change(function(){
+            //     console.log("loded");
+            // })
+            
 
+
+
+            
             //Create Company Section:START
             $("#CreateEmployeeForm").submit(function(e){
 
@@ -237,10 +245,10 @@
                                     $("#Compwebsite").val("");
                                     $("#Complogo").val("");
 
-                                    //refreshing list
-                                    // setTimeout(function(){
-                                    //     location.reload();
-                                    // },2000);
+                                    refreshing list
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },2000);
 
 
                                 }else{

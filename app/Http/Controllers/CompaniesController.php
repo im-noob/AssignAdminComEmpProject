@@ -62,6 +62,16 @@ class CompaniesController extends Controller
         $path = "";
         if($request->hasFile('logo')) {
             $file = $request->file('logo');
+            $ImageSize = getimagesize($file);
+            $width = $ImageSize[0];
+            $height = $ImageSize[1];
+            if ($width < 100 || $height < 100) {
+                return response()->json([
+                    'errors'=>[
+                        'logo' => ['Image is dimension is less than 100 X 100.']
+                    ],
+                ],442);
+            }
             $path = $file->store('public/');
             $pathBaseFile = basename($path);
             // $fileExtension = $file->getClientOriginalExtension();
@@ -101,6 +111,7 @@ class CompaniesController extends Controller
                 "password"=>$request->password,
                 "onlyFullFileName" => $onlyFullFileName,
                 "logoRequest" => $request->logo,
+                "ImageSize" => $ImageSize,
             ],
         ],200);
     }
