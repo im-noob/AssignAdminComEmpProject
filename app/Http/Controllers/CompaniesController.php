@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Companies;
+use App\User;
 use Illuminate\Http\Request;
 
 class CompaniesController extends Controller
@@ -39,7 +40,33 @@ class CompaniesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Checking Validation 
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password'=>'required',
+            'website' => 'nullable',
+            'logo' => 'nullable',
+        ]);
+        
+        Companies::create($request->only('name','email','website','logo'));
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password'=> bcrypt($request->password)
+        ]);
+        
+        return response()->json([
+            'received'=>true,
+            'message'=>"Created Successfully",
+            'data'=>[
+                "name" => $request->name,
+                "email" => $request->email,
+                "website" => $request->website,
+                "logo" => $request->logo,
+                "password"=>$request->password,
+            ],
+        ],200);
     }
 
     /**

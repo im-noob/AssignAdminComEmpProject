@@ -6,11 +6,14 @@
         <div class="card-header">Dashboard</div>
 
         <div class="card-body">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
+                <div id="status">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif             
                 </div>
-            @endif
+                
 
             @if (sizeof($comanyList) != 0) 
                 <a href= "{{url('/CreateNew')}}" type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#Create_Employee_Button_Modal" >Create New Compay</a>
@@ -26,7 +29,7 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="Create_Employee_Button_Modal_Label">Create User</h5>
+                      <h5 class="modal-title" id="Create_Employee_Button_Modal_Label">Create Employee</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -78,7 +81,7 @@
                               <div class="col-md-6 offset-md-4">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                   <button type="submit" class="btn btn-primary" >
-                                      Create User
+                                      Create Employee
                                   </button>
                               </div>
                           </div>
@@ -97,20 +100,22 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="Create_Company_Button_Modal_Label">Create User</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <h5 class="modal-title" id="Create_Company_Button_Modal_Label">Create Company</h5>
+                            <button id="CreateCompanyCloseButton" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                        
-                            <form method="POST" action="{{ url('employees') }} ">
+                            <div id="CreateEmployeeFormError">
+                                
+                            </div>
+                            <form method="POST" action="{{ url('employees') }}" id="CreateEmployeeForm">
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                                     <div class="col-md-6">
-                                        <input id="name" type="text" class="form-control" name="name" required autofocus>
+                                        <input id="Compname" type="text" class="form-control" name="name" required autofocus>
                                     </div>
                                 </div>
                     
@@ -120,15 +125,21 @@
                                 <div class="form-group row">
                                     <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
                                     <div class="col-md-6">
-                                        <input id="email" type="text" class="form-control" name="email" required>
+                                        <input id="Compemail" type="text" class="form-control" name="email" required>
                                     </div>
                                 </div>
 
+                                <div class="form-group row">
+                                    <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('password') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="Comppassword" type="text" class="form-control" name="password" required>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row">
                                     <label for="website" class="col-md-4 col-form-label text-md-right">{{ __('website') }}</label>
                                     <div class="col-md-6">
-                                        <input id="website" type="text" class="form-control" name="website"  required>
+                                        <input id="Compwebsite" type="text" class="form-control" name="website"  required>
                                     </div>
                                 </div>
 
@@ -136,7 +147,7 @@
                                 <div class="form-group row">
                                     <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
                                     <div class="col-md-6">
-                                        <input id="logo" type="file" class="form-control" name="logo">
+                                        <input id="Complogo" type="file" class="form-control" name="logo">
                                     </div>
                                 </div>
                 
@@ -144,8 +155,8 @@
                                 <div class="form-group row mb-0">
                                     <div class="col-md-6 offset-md-4">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary" >
-                                            Create User
+                                        <button type="button" id="CreateCompanyButton" class="btn btn-primary" >
+                                            Create Company
                                         </button>
                                     </div>
                                 </div>
@@ -164,5 +175,77 @@
 
         </div>
     </div>
+
+
+    <script>
+        $(function(){
+            console.log("Script Start");
+            $("#CreateCompanyButton").click(function(){
+                $Compname = $("#Compname").val();
+                $Compemail = $("#Compemail").val();
+                $Compwebsite = $("#Compwebsite").val();
+                $Complogo = $("#Complogo").val();
+                $Comppassword = $("#Comppassword").val();
+                
+                // START: Ajax Request
+                $.ajax({
+                            cache: false,
+                            type: "POST",
+                            data: {
+            
+                                _method: "POST",
+                                _token:  "{{ csrf_token() }}",
+                                name : $Compname,
+                                email : $Compemail,
+                                password: $Comppassword,
+                                website : $Compwebsite,
+                                logo : $Complogo,
+                            },
+                            url: "{{url('/')}}/companies", 
+                            success: function(response){
+                                console.log(response)
+                                if (response.received) {
+
+                                    $("#CreateCompanyCloseButton").click();
+                                    $("#status").text("");
+                                    $("#status").append('<div class="alert alert-success" role="alert">'+
+                                            response.message
+                                        +'</div>');
+
+                                    //clearing data on success
+                                    $("#Compname").val("");
+                                    $("#Compemail").val("");
+                                    $("#Compwebsite").val("");
+                                    $("#Complogo").val("");
+
+                                    // //filling value
+                                    // $("#USDtoINRConverted").val(response.data.USDtoINRConverted);
+                                    // $("#GoldQuientityIngForINR").val(response.data.GoldQuientityIngForINR);
+                                    // $("#INRvalueIN1USD").val(response.data.INRvalueIN1USD);
+                                    // $("#INRto1gGold").val(response.data.INRto1gGold);
+
+                                }else{
+                                    alert("Oops!!! Somthing is not right");
+                                }
+                            },
+                            error: function(xhr,status,error){
+                                $("#CreateEmployeeFormError").text("");
+                                $.each(xhr.responseJSON.errors, function (indexInArray, valueOfElement) { 
+                                    console.log(valueOfElement[0]);
+                                     $("#CreateEmployeeFormError").append('<div class="alert alert-danger" role="alert">'+
+                                            valueOfElement[0]
+                                        +'</div>');
+                                });
+
+                                console.log(xhr.responseJSON);
+
+                                console.log(status);
+                                console.log(error);
+                            }
+                    });
+                    // END: Ajax Request
+            })
+        })
+    </script>
 
 @endsection
