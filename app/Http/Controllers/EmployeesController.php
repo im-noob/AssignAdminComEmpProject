@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Companies;
 use App\Employees;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,11 @@ class EmployeesController extends Controller
      */
     public function index()
     {
-        //
+        $data = Employees::join('companies','companies.id','=','employees.company_id')
+                            ->select('companies.name as companyName','employees.name as name','employees.email as email','phone','employees.id as id')->paginate(10);
+        
+        return view('admin.employeeList',['data'=>$data,'comanyList'=>Companies::all()]);
+
     }
 
     /**
@@ -24,7 +29,7 @@ class EmployeesController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -87,9 +92,29 @@ class EmployeesController extends Controller
      * @param  \App\Employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employees $employees)
+    public function update(Request $request, Employees $employees,$id)
     {
-        //
+         //Checking Validation 
+         $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'company_id' => 'required',
+        ]);
+        
+        $employees::find($id)->update($request->only('name','email','phone','company_id'));
+        
+        
+        return response()->json([
+            'received'=>true,
+            'message'=>"Updated Successfully",
+            'data'=>[
+                "name" => $request->name,
+                "email" => $request->email,
+                "phone" => $request->phone,
+                "company_id" => $request->company_id,
+            ],
+        ],200);
     }
 
     /**
@@ -98,8 +123,10 @@ class EmployeesController extends Controller
      * @param  \App\Employees  $employees
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employees $employees)
+    public function destroy(Employees $employees,$id)
     {
-        //
+        $employees = $employees::find($id);
+        $employees->delete();
+        return redirect()->route('employees.index')->with('status','Deleted Successfully');
     }
 }

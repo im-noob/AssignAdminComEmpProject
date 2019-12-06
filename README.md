@@ -39,7 +39,7 @@ Assignment Small project Admin Company and Employee
 1.[DONE] pagination Companies/Employees list, 10 e
 2.[DONE] must contain at least one uppercase, one lowercase and one symbol with at least 8 charact Normal Email Regex validation and Password validations will be such that password 
 
-4. CRUD employee in admin
+4.[DONE] CRUD employee in admin
 5. CRUD in copany
 
 6. Email notification: send email to admin email whenever a new company is entered

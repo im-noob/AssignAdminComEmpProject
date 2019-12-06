@@ -154,6 +154,6 @@ class CompaniesController extends Controller
     {
         $companies = $companies::find($id);
         $companies->delete();
-        return redirect()->route('companies.index')->with("Successfully Deleted");
+        return redirect()->route('companies.index')->with('status','Deleted Successfully');
     }
 }

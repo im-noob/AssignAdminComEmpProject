@@ -21,7 +21,7 @@
 
             <a href= "#" type="button" class="btn btn-lg btn-block btn-dark" data-toggle="modal" data-target="#Create_Company_Button_Modal" >Create New Company</a>
              <a href= "{{url('/companies')}}" type="button" class="btn btn-lg btn-block btn-success">Company List</a>
-            <a href= "{{url('/EmployeeList')}}" type="button" class="btn btn-lg btn-block btn-info">Employee List</a>
+            <a href= "{{url('/employees')}}" type="button" class="btn btn-lg btn-block btn-info">Employee List</a>
             
 
             {{-- CreateNew Employee Button Modal Section:START --}}

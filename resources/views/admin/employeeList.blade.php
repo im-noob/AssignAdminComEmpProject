@@ -19,8 +19,8 @@
                     <th scope="col">UserID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Logo</th>
-                    <th scope="col">Website</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">phone</th>
                     <th scope="col">Update</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -31,66 +31,71 @@
               @forelse ($data as $item)
                 <tr>
                     <th scope="row">{{$item->id}}</th>
-                    <th> {{$item->name}}</th>
+                    <th>{{$item->name}}</th>
                     <th>{{$item->email}} </th>
-                    <th>{{$item->logo}}</th>
-                    <th>{{$item->website}}</th>
+                    <th>{{$item->companyName}}</th>
+                    <th>{{$item->phone}}</th>
                     {{-- START:Update Button --}}
                     <th>
-                      <button type="button"  class="btn btn-primary update_btn update_button" data-toggle="modal" data-target="#Update_Company_Button_Modal_{{$item->id}}">Update</button>
+                      <button type="button"  class="btn btn-primary update_btn update_button" data-toggle="modal" data-target="#Update_Employee_Button_Modal_{{$item->id}}">Update</button>
                           
 
-        {{-- UpdateNew Company Button Modal Section:START --}}
-        <div class="modal fade" id="Update_Company_Button_Modal_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="Update_Company_Button_Modal_Label" aria-hidden="true">
+        {{-- UpdateNew Employee Button Modal Section:START --}}
+        <div class="modal fade" id="Update_Employee_Button_Modal_{{$item->id}}" tabindex="-1" role="dialog" aria-labelledby="Update_Employee_Button_Modal_Label" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="Update_Company_Button_Modal_Label">Update Company</h5>
-                        <button id="UpdateCompanyCloseButton_{{$item->id}}" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <h5 class="modal-title" id="Update_Employee_Button_Modal_Label">Update Employee</h5>
+                        <button id="UpdateEmployeeCloseButton_{{$item->id}}" type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div id="UpdateCompanyFormError_{{$item->id}}">
+                        <div id="UpdateEmployeeFormError_{{$item->id}}">
                             
                         </div>
                         <form method="POST" action="{{ url('employees') }}" id="UpdateEmployeeForm">
                             @csrf
+
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+                                <label for="Empname_{{$item->id}}" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
                                 <div class="col-md-6">
-                                    <input id="Compname_{{$item->id}}" type="text" class="form-control" name="name" required autofocus>
+                                    <input id="Empname_{{$item->id}}" type="text" class="form-control" name="name" required autofocus>
                                 </div>
                             </div>
                                             
                             
     
                             <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
+                                <label for="Empemail_{{$item->id}}" class="col-md-4 col-form-label text-md-right">{{ __('Email') }}</label>
                                 <div class="col-md-6">
-                                    <input id="Compemail_{{$item->id}}" type="text" class="form-control" name="email" required>
+                                    <input id="Empemail_{{$item->id}}" type="text" class="form-control" name="email" required>
                                 </div>
                             </div>
     
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('password') }}</label>
-                                <div class="col-md-6">
-                                    <input id="Comppassword_{{$item->id}}" type="text" class="form-control" name="password" required>
-                                </div>
-                            </div>
+                            
     
                             <div class="form-group row">
-                                <label for="website" class="col-md-4 col-form-label text-md-right">{{ __('website') }}</label>
+                                <label for="Empphone_{{$item->id}}" class="col-md-4 col-form-label text-md-right">{{ __('phone') }}</label>
                                 <div class="col-md-6">
-                                    <input id="Compwebsite_{{$item->id}}" type="text" class="form-control" name="website"  required>
+                                    <input id="Empphone_{{$item->id}}" type="text" class="form-control" name="phone"  required>
                                 </div>
                             </div>
     
     
+  
+
                             <div class="form-group row">
-                                <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('logo') }}</label>
+                                <label for="Company_id{{$item->id}}" class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
                                 <div class="col-md-6">
-                                    <input id="Complogo_{{$item->id}}" type="file" class="form-control" name="logo">
+                                  <select class="form-control" id="Company_id{{$item->id}}" name="company_id">
+                                      @forelse ($comanyList as $company)
+                                          <option value="{{$company->id}}">{{$company->name}}</option>
+                                      @empty
+                                          <option value="0">No Company</option>
+                                      @endforelse
+                                      
+                                    </select>
                                 </div>
                             </div>
             
@@ -98,8 +103,8 @@
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" Compname_ID="{{$item->id}}" id="UpdateCompanyButton" class="UpdateCompanyButton btn btn-primary" >
-                                        Update Company
+                                    <button type="button" Emp_ID="{{$item->id}}" id="UpdateEmployeeButton" class="UpdateEmployeeButton btn btn-primary" >
+                                        Update Employee
                                     </button>
                                 </div>
                             </div>
@@ -110,14 +115,14 @@
                 </div>
             </div>
         </div>
-        {{-- UpdateNew Company Button Modal Section:STOP --}}
+        {{-- UpdateNew Employee Button Modal Section:STOP --}}
     
                     </th>
                     {{-- STOP:Update Button --}}
 
                     {{-- START:Delete Button --}}
                     <th>
-                        <form method="POST" action="{{url('/companies')}}/{{$item->id}}"> 
+                        <form method="POST" action="{{url('/employees')}}/{{$item->id}}"> 
                           @method("DELETE")
                           @csrf
                           <button type="submit" class="btn btn-danger">Delete</button>
@@ -149,7 +154,13 @@
         <script>
             $(function(){
                 //centring paginating button
-                document.getElementsByClassName("pagination")[0].classList.add("justify-content-center");
+
+                try {
+                    document.getElementsByClassName("pagination")[0].classList.add("justify-content-center");
+                    
+                } catch (error) {
+                    console.log("Less than 10 data");
+                }
 
             })
         </script>
@@ -160,29 +171,24 @@
         $(function(){
             console.log("loaded");
 
-            //Update Company Section:START
-            $(".UpdateCompanyButton").click(function(){
+            //Update Employee Section:START
+            $(".UpdateEmployeeButton").click(function(){
 
 
-                console.log("UpdateCompanyButton");
-                $id = $(this).attr("Compname_ID");
-                $Compname = $("#Compname_"+$id).val();
-                $Compemail = $("#Compemail_"+$id).val();
-                $Compwebsite = $("#Compwebsite_"+$id).val();
-                $Complogo = $("#Complogo_"+$id).val();
-                $Comppassword = $("#Comppassword_"+$id).val();
+                console.log("UpdateEmployeeButton");
+                $id = $(this).attr("Emp_ID");
+                $Empname = $("#Empname_"+$id).val();
+                $Empemail = $("#Empemail_"+$id).val();
+                $Empphone = $("#Empphone_"+$id).val();
+                $company_id = $("#Company_id"+$id).val();
 
-                if(!validateEmail($Compemail)){
+                console.log($id);
+                if(!validateEmail($Empemail)){
                     alert("Not a valid Email");
                     return;
                 }
 
-                if(!validatePassword($Comppassword)){
-                    alert("Not a valid Password!!must contain at least one uppercase, one lowercase and one symbol with at least 8 characters ");
-                    return;
-                }
-
-                console.log($id);
+                
                 
                 // START: Ajax Request
                 $.ajax({
@@ -192,28 +198,27 @@
             
                                 _method: "PUT",
                                 _token:  "{{ csrf_token() }}",
-                                name : $Compname,
-                                email : $Compemail,
-                                password: $Comppassword,
-                                website : $Compwebsite,
-                                logo : $Complogo,
+                                name : $Empname,
+                                email : $Empemail,
+                                phone : $Empphone,
+                                company_id : $company_id,
                             },
-                            url: "{{url('/')}}/companies/"+$id, 
+                            url: "{{url('/')}}/employees/"+$id, 
                             success: function(response){
                                 console.log(response)
                                 if (response.received) {
 
-                                    $("#UpdateCompanyCloseButton_"+$id).click();
+                                    $("#UpdateEmployeeCloseButton_"+$id).click();
                                     $("#status").text("");
                                     $("#status").append('<div class="alert alert-success" role="alert">'+
                                             response.message
                                         +'</div>');
 
                                     //clearing data on success
-                                    $("#Compname_"+$id).val("");
-                                    $("#Compemail_"+$id).val("");
-                                    $("#Compwebsite_"+$id).val("");
-                                    $("#Complogo_"+$id).val("");
+                                    $("#Empname_"+$id).val("");
+                                    $("#Empemail_"+$id).val("");
+                                    $("#Empphone_"+$id).val("");
+                                    $("#Company_id"+$id).val("");
 
                                     //refreshing list
                                     setTimeout(function(){
@@ -227,10 +232,10 @@
                                 }
                             },
                             error: function(xhr,status,error){
-                                $("#UpdateCompanyFormError_"+$id).text("");
+                                $("#UpdateEmployeeFormError_"+$id).text("");
                                 $.each(xhr.responseJSON.errors, function (indexInArray, valueOfElement) { 
                                     console.log(valueOfElement[0]);
-                                     $("#UpdateCompanyFormError_"+$id).append('<div class="alert alert-danger" role="alert">'+
+                                     $("#UpdateEmployeeFormError_"+$id).append('<div class="alert alert-danger" role="alert">'+
                                             valueOfElement[0]
                                         +'</div>');
                                 });
@@ -243,7 +248,7 @@
                     });
                     // END: Ajax Request
             })
-            //Update COmpany Section:STOP
+            //Update Employee Section:STOP
 
         })
     </script>
