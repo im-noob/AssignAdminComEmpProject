@@ -16,7 +16,8 @@
                     <th scope="col">UserID</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
+                    <th scope="col">Logo</th>
+                    <th scope="col">Website</th>
                     <th scope="col">Update</th>
                     <th scope="col">Delete</th>
                 </tr>
@@ -27,9 +28,10 @@
               @forelse ($data as $item)
                 <tr>
                     <th scope="row">{{$item->id}}</th>
-                    <th>{{$item->first_name}} {{$item->last_name}}</th>
+                    <th>{{$item->first_name}} {{$item->name}}</th>
                     <th>{{$item->email}} </th>
-                    <th>{{$item->phone}}</th>
+                    <th>{{$item->logo}}</th>
+                    <th>{{$item->website}}</th>
                     {{-- START:Update Button --}}
                     <th>
                       <button type="button"  class="btn btn-primary update_btn update_button" data-toggle="modal" data-target="#Update_Button_Modal_{{$item->id}}">Update</button>
@@ -99,7 +101,7 @@
 
                     {{-- START:Delete Button --}}
                     <th>
-                        <form method="POST" action="{{url('/employees')}}/{{$item->id}}"> 
+                        <form method="POST" action="{{url('/companies')}}/{{$item->id}}"> 
                           @method("DELETE")
                           @csrf
                           <button type="submit" class="btn btn-danger">Delete</button>

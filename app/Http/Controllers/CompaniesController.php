@@ -12,7 +12,7 @@ class CompaniesController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     */
+     */ 
     public function index()
     {
         return view('admin.companyList',['data'=>Companies::paginate(10)]);
@@ -109,8 +109,10 @@ class CompaniesController extends Controller
      * @param  \App\Companies  $companies
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Companies $companies)
+    public function destroy(Companies $companies,$id)
     {
-        //
+        $companies = $companies::find($id);
+        $companies->delete();
+        return redirect()->route('companies.index')->with("Successfully Deleted");
     }
 }
