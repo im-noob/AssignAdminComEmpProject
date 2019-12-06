@@ -15,7 +15,7 @@
                 </div>
                 
 
-            @if (sizeof($comanyList) != 0) 
+            @if (sizeof($companyList) != 0) 
                 <a href= "#" type="button" class="btn btn-lg btn-block btn-primary" data-toggle="modal" data-target="#Create_Employee_Button_Modal" >Create New Employee</a>
             @endif
 
@@ -51,7 +51,7 @@
                               <label for="exampleFormControlSelect1" class="col-md-4 col-form-label text-md-right">{{ __('Company') }}</label>
                               <div class="col-md-6">
                                 <select class="form-control" id="Empcompany_id" name="company_id">
-                                    @forelse ($comanyList as $item)
+                                    @forelse ($companyList as $item)
                                         <option value="{{$item->id}}">{{$item->name}}</option>
                                     @empty
                                         <option value="0">No Company</option>

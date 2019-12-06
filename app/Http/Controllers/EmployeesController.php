@@ -18,7 +18,7 @@ class EmployeesController extends Controller
         $data = Employees::join('companies','companies.id','=','employees.company_id')
                             ->select('companies.name as companyName','employees.name as name','employees.email as email','phone','employees.id as id')->paginate(10);
         
-        return view('admin.employeeList',['data'=>$data,'comanyList'=>Companies::all()]);
+        return view('admin.employeeList',['data'=>$data,'companyList'=>Companies::all()]);
 
     }
 

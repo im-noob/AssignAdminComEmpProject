@@ -19,7 +19,7 @@ class CompaniesController extends Controller
     }
 
     public function indexAll(){
-        return view('admin.home',['comanyList'=>Companies::all()]);
+        return view('admin.home',['companyList'=>Companies::all()]);
     }
 
     /**
