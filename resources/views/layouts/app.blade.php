@@ -98,5 +98,21 @@
         </main>
 
     </div>
+
+    <script>
+        // GLOBAL FUNCTION
+        function validateEmail(email) 
+        {
+            var re = /\S+@\S+\.\S+/;
+            return re.test(email);
+        }
+
+        function validatePassword(password){
+            var re = /(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+            return re.test(password);
+        }
+        
+    
+    </script>
 </body>
 </html>

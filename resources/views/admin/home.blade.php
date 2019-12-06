@@ -190,6 +190,19 @@
                 $Complogo = $("#Complogo").val();
                 $Comppassword = $("#Comppassword").val();
 
+                if(!validateEmail($Compemail)){
+                    alert("Not a valid Email");
+                    return;
+                }
+
+                if(!validatePassword($Comppassword)){
+                    alert("Not a valid Password!!must contain at least one uppercase, one lowercase and one symbol with at least 8 characters ");
+                    return;
+                }
+
+                
+
+
                 // var file_data = $('#pic').prop('files')[0];
                 // var form_data = new FormData();
                 // form_data.append('file', file_data);
@@ -264,6 +277,14 @@
                 $Empcompany_id = $("#Empcompany_id").val();
                 $Empphone = $("#Empphone").val();
                 
+
+
+                if(!validateEmail($Empemail)){
+                    alert("Not a valid Email");
+                    return;
+                }
+
+
                 // START: Ajax Request
                 $.ajax({
                             cache: false,

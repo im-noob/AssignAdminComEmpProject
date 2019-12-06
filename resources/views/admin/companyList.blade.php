@@ -132,12 +132,28 @@
                   </tr>
               @endforelse
                 
+
+              
                 
 
 
             </tbody>
 
         </table>
+        <div style="width: 100%;">
+            <div class="text-xs-center">
+                    {{ $data->links() }}
+            </div>
+        </div>
+
+        <script>
+            $(function(){
+                //centring paginating button
+                document.getElementsByClassName("pagination")[0].classList.add("justify-content-center");
+
+            })
+        </script>
+        
     </section>
 
     <script>
@@ -147,6 +163,7 @@
             //Update Company Section:START
             $(".UpdateCompanyButton").click(function(){
 
+
                 console.log("UpdateCompanyButton");
                 $id = $(this).attr("Compname_ID");
                 $Compname = $("#Compname_"+$id).val();
@@ -154,6 +171,16 @@
                 $Compwebsite = $("#Compwebsite_"+$id).val();
                 $Complogo = $("#Complogo_"+$id).val();
                 $Comppassword = $("#Comppassword_"+$id).val();
+
+                if(!validateEmail($Compemail)){
+                    alert("Not a valid Email");
+                    return;
+                }
+
+                if(!validatePassword($Comppassword)){
+                    alert("Not a valid Password!!must contain at least one uppercase, one lowercase and one symbol with at least 8 characters ");
+                    return;
+                }
 
                 console.log($id);
                 
